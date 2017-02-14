@@ -6,7 +6,9 @@
 # Search criteria could be url or email should be unique to each lead
 # Output is a csv with name, search criteria, and output depending on if the search criteria was found in Avature.
 
-# I removed the information for Avature's instance just to be safe upon uploading to repository.
+#TODO Add a UI
+#TODO Saved checked terms to file or database to use as a pre-check.  Only saved those terms that have already been found in the Avature system.
+
 
 import csv
 import time
@@ -19,7 +21,7 @@ output_file = 'found.csv' # path and name for output file
 driver = webdriver.Firefox() # which webdriver for Selenium to use
 waitT = 1 # How long to wait in seconds between getting one item and the next
 countTo = 30 # How many seconds to wait to enter username and password into Avature window
-instanceAvature = '' # <--Put your Avature instance here don't forget the trailing /
+instanceAvature = 'https://ciscorecruiting.avature.net/' # <--Put your Avature instance here don't forget the trailing /
 searchString = '#Search/Type: "all", In: "everything"/' # This is the string for the search settings here
 
 # Load input file
