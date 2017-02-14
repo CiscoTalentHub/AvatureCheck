@@ -1,9 +1,12 @@
 # A program to check Avature for duplicates
 # Written by Gerald Sears 2/14/17
+# Gerald Sears gesears@cisco.com
 # Takes a simple csv file as input first column for lead names, and second for search criteria
 # *The program expects column headers so input starts at line 2 of the input_file csv.*
 # Search criteria could be url or email should be unique to each lead
 # Output is a csv with name, search criteria, and output depending on if the search criteria was found in Avature.
+
+# I removed the information for Avature's instance just to be safe upon uploading to repository.
 
 import csv
 import time
