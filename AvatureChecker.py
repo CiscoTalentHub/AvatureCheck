@@ -15,11 +15,11 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-input_file = 'searchList.csv' # path and name for input file
+input_file = 'searchList2.csv' # path and name for input file
 startRow = 1 # The first row that contains data to check in the input_file
-output_file = 'found.csv' # path and name for output file
+output_file = 'found2.csv' # path and name for output file
 driver = webdriver.Firefox() # which webdriver for Selenium to use
-waitT = 1 # How long to wait in seconds between getting one item and the next
+waitT = .5 # How long to wait in seconds between getting one item and the next
 countTo = 30 # How many seconds to wait to enter username and password into Avature window
 instanceAvature = 'https://ciscorecruiting.avature.net/' # <--Put your Avature instance here don't forget the trailing /
 searchString = '#Search/Type: "all", In: "everything"/' # This is the string for the search settings here
@@ -30,17 +30,19 @@ with open(input_file, 'rt') as fin:
     searchFile = [row for row in cin]
 
 # Setup Output
-target_file = open(output_file, 'w+', encoding='utf-8', newline='')
-outputwriter = csv.writer(target_file, dialect='excel')
+def startCSVout(output): # Creates a new csv file for output.  Overwrites existing file, if any!
+    target_file = open(output, 'w+', encoding='utf-8', newline='')
+    return csv.writer(target_file, dialect='excel')
 
 # Opens login page and waits with a countdown for user to enter login information to the page directly.
-driver.get('https://ciscorecruiting.avature.net/')
-for i in range(1, countTo):
-    print(i)
-    time.sleep(1)
+def loginAvature(count): #Initial Avature Login
+    driver.get('https://ciscorecruiting.avature.net/')
+    for i in range(1, count):
+        print(count - i)
+        time.sleep(1)
 
-
-def getPage(target): #Function to get each search page.  Returns page as a BeautifulSoup object.
+# Function to get each search page.  Returns page as a BeautifulSoup object.
+def getPage(target):
     driver.get(instanceAvature + searchString + target)
     delay = 1
     attempts = 0
@@ -64,7 +66,9 @@ def getPage(target): #Function to get each search page.  Returns page as a Beaut
         attempts +=1
     return bsObj
 
+loginAvature(countTo)
 row = startRow
+outputwriter = startCSVout(output_file)
 while row < len(searchFile):
     checkName = searchFile[row][0]
     checkTarget = searchFile[row][1]
@@ -78,6 +82,6 @@ while row < len(searchFile):
             checkResults = 'Found in system. Probable Duplicate.'
         else: # If NoResultsMessage is found then the term is not in Avature
             checkResults = 'Not found in system.'
-    outputwriter.writerow([checkName,checkTarget,checkResults])
+    outputwriter.writerow([checkName, checkTarget, checkResults])
     time.sleep(waitT)
-    row +=1
+    row += 1
