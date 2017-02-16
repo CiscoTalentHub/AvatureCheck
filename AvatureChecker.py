@@ -6,9 +6,10 @@
 # Search criteria could be url or email should be unique to each lead
 # Output is a csv with name, search criteria, and output depending on if the search criteria was found in Avature.
 
-#TODO Add a UI
-#TODO Saved checked terms to file or database to use as a pre-check.  Only saved those terms that have already been found in the Avature system.
-
+# TODO Add a UI look into cli first then gui
+# TODO Saved checked terms to file or database to use as a pre-check.  Only saved those terms found in Avature.
+# TODO Find and impliment a good error/debugging/testing setup.  Print statements might not be enough
+# TODO Add logic to allow multi-value checking(eg Name AND location or Name AND Employer)
 
 import csv
 import time
@@ -35,6 +36,7 @@ def startCSVout(output): # Creates a new csv file for output.  Overwrites existi
     return csv.writer(target_file, dialect='excel')
 
 # Opens login page and waits with a countdown for user to enter login information to the page directly.
+# TODO Add logic to check to see if the page is logged-in instead of waiting for countdown
 def loginAvature(count): #Initial Avature Login
     driver.get('https://ciscorecruiting.avature.net/')
     for i in range(1, count):
@@ -72,7 +74,8 @@ outputwriter = startCSVout(output_file)
 while row < len(searchFile):
     checkName = searchFile[row][0]
     checkTarget = searchFile[row][1]
-    print('Getting ' + checkTarget + ", which is " + str(row) + ' of ' + str(len(searchFile) - startRow))
+    print('Checking ' + checkTarget + ", which is " + str(row) + ' of ' + str(len(searchFile) - startRow))
+    # TODO Put test logic into its own function
     if checkTarget == '': # Check to make sure there is something to search for this row.
         checkResults = 'No Search Provided.'
     else: # Check to see if the No Results Message is found on the page.
