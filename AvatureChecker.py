@@ -7,14 +7,32 @@
 # Output is a csv with name, search criteria, and output depending on if the search criteria was found in Avature.
 
 # TODO Add a UI look into cli first then gui
-# TODO Saved checked terms to file or database to use as a pre-check.  Only saved those terms found in Avature.
+# TODO Saved checked terms to file or database to use as a pre-check.
+#      Only saved those terms found in Avature.
 # TODO Find and impliment a good error/debugging/testing setup.  Print statements might not be enough
 # TODO Add logic to allow multi-value checking(eg Name AND location or Name AND Employer)
 
 import csv
 import time
+import os
+import configparser
 from bs4 import BeautifulSoup
 from selenium import webdriver
+
+# TODO Refactor the setup stuff into a function(s) for easier control
+# Loading settings and learning about the system
+userHome = os.path.expanduser('~') # Gets the home folder location for the user
+if os.name == 'nt':
+    checkerDir = userHome + '\\Documents\\AvatureChecker'
+elif os.name == 'posix':
+    checkerDir = userHome + '/AvatureChecker'
+else:
+    print("Sorry, unfamiliar with this sytem please set pathnames manually.")
+if os.path.exists(checkerDir):
+    print("Loading from " + checkerDir)
+else:
+    os.system('mkdir ' + checkerDir)
+# TODO Setup configparsing and saving of a default config if none is given.
 
 input_file = 'searchList2.csv' # path and name for input file
 startRow = 1 # The first row that contains data to check in the input_file
