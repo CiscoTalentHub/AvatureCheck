@@ -29,6 +29,7 @@ searchString = '#Search/Type: "all", In: "everything"/' # This is the string for
 with open(input_file, 'rt') as fin:
     cin = csv.reader(fin)
     searchFile = [row for row in cin]
+    print(searchFile)
 
 # Setup Output
 def startCSVout(output): # Creates a new csv file for output.  Overwrites existing file, if any!
@@ -46,7 +47,7 @@ def loginAvature(count): #Initial Avature Login
 # Function to get each search page.  Returns page as a BeautifulSoup object.
 def getPage(target):
     driver.get(instanceAvature + searchString + target)
-    delay = 1
+    delay = 1.5
     attempts = 0
     stopAfter = 10
     htmlpage = driver.page_source
