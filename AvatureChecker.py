@@ -16,17 +16,17 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-input_file = 'searchList2.csv' # path and name for input file
+input_file = 'checklist.csv' # path and name for input file
 startRow = 1 # The first row that contains data to check in the input_file
-output_file = 'found2.csv' # path and name for output file
+output_file = 'checklist_done.csv' # path and name for output file
 driver = webdriver.Firefox() # which webdriver for Selenium to use
 waitT = .5 # How long to wait in seconds between getting one item and the next
 countTo = 30 # How many seconds to wait to enter username and password into Avature window
-instanceAvature = 'https://ciscorecruiting.avature.net/' # <--Put your Avature instance here don't forget the trailing /
+instanceAvature = 'https://cisco.avature.net/' # <--Put your Avature instance here don't forget the trailing /
 searchString = '#Search/Type: "all", In: "everything"/' # This is the string for the search settings here
 
 # Load input file
-with open(input_file, 'rt') as fin:
+with open(input_file, 'rt', encoding='utf-8') as fin:
     cin = csv.reader(fin)
     searchFile = [row for row in cin]
     print(searchFile)
@@ -39,7 +39,7 @@ def startCSVout(output): # Creates a new csv file for output.  Overwrites existi
 # Opens login page and waits with a countdown for user to enter login information to the page directly.
 # TODO Add logic to check to see if the page is logged-in instead of waiting for countdown
 def loginAvature(count): #Initial Avature Login
-    driver.get('https://ciscorecruiting.avature.net/')
+    driver.get(instanceAvature)
     for i in range(1, count):
         print(count - i)
         time.sleep(1)
