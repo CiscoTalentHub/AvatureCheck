@@ -67,7 +67,7 @@ def start_csvout(output):  # Creates a new csv file for output. Overwrites exist
 # Opens login page and waits with a countdown for user to enter login information to the page directly.
 # TODO Add logic to check to see if the page is logged-in instead of waiting for countdown
 def loginAvature(count): #Initial Avature Login
-    driver.get('https://ciscorecruiting.avature.net/')
+    driver.get(instanceAvature)
     for i in range(1, count):
         print(count - i)
         time.sleep(1)
@@ -78,7 +78,7 @@ def getPage(target):
     driver.get(instanceAvature + searchString + target)
     delay = 1
     attempts = 0
-    stopAfter = 10
+    stopAfter = 5
     htmlpage = driver.page_source
     bsObj = BeautifulSoup(htmlpage, 'html.parser')
     s = bsObj.find('div', {'class':'RecentSearchItem'})
@@ -95,6 +95,7 @@ def getPage(target):
         s = bsObj.find('div', {'class': 'RecentSearchItem'})
         if attempts == stopAfter:
             print("Page Time Out: Did not load in time.")
+            bsObj = False
         attempts +=1
     return bsObj
 
@@ -112,11 +113,15 @@ while row < len(searchFile):
         checkResults = 'No Search Provided.'
     else:  # Check to see if the No Results Message is found on the page.
         pageObj = getPage(checkTarget)
-        test = pageObj.find('div', {'class':'uicore_list_NoResultsMessage'})
-        if test == None:  # If "NoResultsMessage is not found, then the search term is in Avature
-            checkResults = 'Found in system. Probable Duplicate.'
-        else:  # If NoResultsMessage is found then the term is not in Avature
-            checkResults = 'Not found in system.'
+        if pageObj == False:
+            checkResults = 'System Timed Out.'
+        else:
+            test = pageObj.find('div', {'class':'uicore_list_NoResultsMessage'})
+            if test == None:  # If "NoResultsMessage is not found, then the search term is in Avature
+                checkResults = 'Found in system. Probable Duplicate.'
+            else:  # If NoResultsMessage is found then the term is not in Avature
+                checkResults = 'Not found in system.'
+
     outputwriter.writerow([checkName, checkTarget, checkResults])
     time.sleep(waitT)
     row += 1
