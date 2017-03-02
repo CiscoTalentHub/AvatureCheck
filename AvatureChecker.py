@@ -50,10 +50,10 @@ countTo = int(cfg['loginset']['countTo'])  # How many seconds to wait to enter u
 instanceAvature = cfg['Avatureset']['instanceAvature']  # <-Put your Avature instance here don't forget the trailing /
 print(instanceAvature)
 searchString = cfg['Avatureset']['searchString']  # This is the string for the search settings here
-print(instanceAvature + searchString)
+print(instanceAvature + searchStr
 
 # Load input file
-with open(input_file, 'rt') as fin:
+with open(input_file, 'rt', encoding='utf-8') as fin:
     cin = csv.reader(fin)
     searchFile = [row for row in cin]
     print(searchFile)
@@ -76,7 +76,7 @@ def loginAvature(count): #Initial Avature Login
 # Function to get each search page.  Returns page as a BeautifulSoup object.
 def getPage(target):
     driver.get(instanceAvature + searchString + target)
-    delay = 1
+    delay = 1.5
     attempts = 0
     stopAfter = 5
     htmlpage = driver.page_source
